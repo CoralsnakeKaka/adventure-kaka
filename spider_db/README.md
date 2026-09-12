@@ -6,6 +6,7 @@
 ## 当前进度
 - [x]第一版：可以成功请求豆瓣首页并打印HTML
 - [x]第二版：可以提取出第一页电影名称
+- [x]第三版：可以提取整个榜单电影名称
 
 ## 运行
 pip install requests beautifulsoup
