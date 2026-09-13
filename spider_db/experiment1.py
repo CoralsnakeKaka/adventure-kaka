@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import csv
 
 url = "https://movie.douban.com/top250"
 headers = {
@@ -18,11 +19,20 @@ for page in range(0, 10):
 
     for item in movie_items:
         title_span = item.find("span", class_="title")
+        rating_span = item.find("span", class_="rating_num")
+        link_tag = item.find("a")
+
         if title_span:
-            total.append(title_span.text)
+            title = title_span.text
+            rating = rating_span.text if rating_span else "N/A"
+            link = link_tag["href"] if link_tag else "N/A"
+        total.append([title, rating, link])
 
     time.sleep(2)
     print("page",page+1,"state",response.status_code)
-    print("Total movies found:", len(total))
 
-print(total)
+    with open("douban_top250.csv", "w", newline="", encoding="utf-8") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Title", "Rating", "Link"])
+        writer.writerows(total)
+    print("total movies found:", len(total))
